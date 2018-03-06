@@ -58,10 +58,10 @@ services:
   db:
     image: mysql:5.7
     environment:
-      - MYSQL_ROOT_PASSWORD=secret
-      - MYSQL_DATABASE=revel
-      - MYSQL_USER=revel
-      - MYSQL_PASSWORD=secret
+      - MYSQL_ROOT_PASSWORD=sonarqube
+      - MYSQL_DATABASE=sonarqube
+      - MYSQL_USER=sonarqube
+      - MYSQL_PASSWORD=sonarqube
     volumes:
       - ./datadir:/var/lib/mysql
 ```

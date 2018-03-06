@@ -1,0 +1,11 @@
+version: '2'
+services: 
+  oracle_xe:
+    image: wnameless/oracle-xe-11g
+    environment:
+      - "ORACLE_ALLOW_REMOTE=true"
+    ports:
+      - "30022:22"
+      - "1521:1521"
+    ## options as below
+    restart: always

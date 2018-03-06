@@ -1,0 +1,11 @@
+version: '2'
+services: 
+  jenkins:
+    image: jenkins
+    volumes:
+      - "/srv/jenkins:/var/jenkins_home"
+    ports:
+      - "9090:8080"
+      - "50000:50000"
+    ## options as below
+    restart: always

@@ -1,0 +1,10 @@
+version: '2'
+services: 
+  nexus:
+    image: sonatype/nexus
+    volumes:
+      - "/srv/nexus:/sonatype-work"
+    ports:
+      - "8081:8081"
+    ## options as below
+    restart: always

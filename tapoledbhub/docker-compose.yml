@@ -1,0 +1,8 @@
+version: '2'
+services: 
+  tapoledbhub:
+    image: hyunjongcho/tadpoledbhub:latest
+    ports:
+      - "20080:8080"
+    ## options as below
+    restart: always

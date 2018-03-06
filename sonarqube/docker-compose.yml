@@ -1,0 +1,13 @@
+version: '2'
+services: 
+  sonarqube:
+    image: sonarqube
+    environment:
+      - "SONARQUBE_JDBC_USERNAME=sonarqube"
+      - "SONARQUBE_JDBC_PASSWORD=sonarqube"
+      - "SONARQUBE_JDBC_URL=jdbc:mysql://{ip}:3306/sonarqube?useUnicode=true&characterEncoding=utf8"
+    ports:
+      - "9000:9000"
+      - "9092:9092"
+    ## options as below
+    restart: always

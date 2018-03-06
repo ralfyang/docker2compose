@@ -1,0 +1,117 @@
+#!/bin/bash
+## Docker-compose file generator made by RalfYang
+## goody80762@gmail.com
+
+
+## Syntax sample
+# ./dcg sudo docker run -d -p 8080:80 --publish 10443:443 --name gitlab --restart=always -v /srv/gitlab/config:/etc/gitlab -e TEST_VAR=test  gitlab
+
+## Define the docker-compose.yml output file
+Output="./output"
+
+## Array for exoprt file type
+option_array="environment volumes ports options"
+
+
+## Input all command
+raw_data=$@
+all_command=$(echo "$raw_data" | sed  -e "s#--volume#-v#g" -e 's#--publish#-p#g' -e 's# \-[a-zA-Z]#&_@%@#g' -e 's#@%@ #@%@#g' -e 's$-d_@%@$$g')
+
+## SED Test output
+# echo ""
+# echo "###########$all_command#######"
+	if [[ $all_command = "" ]];then
+		echo ""
+		echo "Please make sure the docker command as below"
+		echo "ex)"
+		echo "docker run -d -p 8080:80 --publish 10443:443 --name gitlab --restart=always -v /srv/gitlab/config:/etc/gitlab -e TEST_VAR=test gitlab"
+		read all_command
+		if [[ $all_command = "" ]];then
+			echo " - Command has been not inserted !!"
+			exit 1
+		fi
+	fi
+
+## Define the Docker image name
+image_name=$(echo "$all_command" | awk '{print $NF}')
+
+## Define the Docker process name
+Name=$(echo "$all_command" | awk -F '--name ' '{print $2}' | awk '{print $1}')
+	if [[ $Name = "" ]];then
+		Name="default"
+	fi
+
+## Layer for base setting with image_name
+cat << EOF > $Output
+version: '2'
+services: 
+  $Name:
+    image: $image_name
+EOF
+
+
+
+## File initialize
+File_export(){
+	Target_name=$1
+		if [[ $Target_name = "options" ]];then 
+			echo "    ## $Target_name as below" > $Output.$Target_name
+		else
+			echo "    $Target_name:" > $Output.$Target_name
+		fi
+}
+
+
+	## Loop for file initializing
+	for exporting in $option_array;do
+		File_export $exporting
+	done
+
+
+
+Parser_eng(){
+OPT=$1
+KEY=$2
+	## Loop for Parsing
+	for i in $all_command;do
+		if [[ $OPT != "options" ]];then
+			if [[ $(echo $i | grep -e "$KEY") != ""  ]] ;then
+				echo "      - \"$i\"" | sed -e "s#$KEY##g"  >> $Output.$OPT
+			fi
+		else
+			if [[ $(echo $i | grep -e '--restart') != ""  ]] ;then
+				echo "    $i" | sed -e "s/--//g" -e "s/=/: /g" >> $Output.$OPT
+			fi
+		fi
+	done
+}
+
+
+Parser_eng environment "-e_@%@"
+Parser_eng ports "-p_@%@"
+Parser_eng volumes "-v_@%@"
+Parser_eng options "--restart"
+
+
+## For merge & clean the file
+Option_output(){
+	Target_option=$1
+		## Check the information of Volume
+		if [[ $(cat output.$Target_option | egrep -v "$Target_option:") != "" ]];then
+			cat $Output.$Target_option >> $Output
+		fi
+	## purge the temp file
+	rm -f $Output.$Target_option
+
+}
+	## Loop for file initializing
+	for exporting in $option_array;do
+		Option_output $exporting
+	done
+
+## Make directory
+mkdir -p ./$Name
+
+## Result file exports
+mv $Output $Name/docker-compose.yml
+cat $Name/docker-compose.yml

@@ -37,3 +37,31 @@ tree
     └── docker-compose.yml
 ```
 
+## You can make a docker-compose stack as below(Manually)
+* Sonarqube+MySQL stack
+```
+version: '2'
+services:
+  sonarqube:
+    image: sonarqube
+    environment:
+      - "SONARQUBE_JDBC_USERNAME=sonarqube"
+      - "SONARQUBE_JDBC_PASSWORD=sonarqube"
+      - "SONARQUBE_JDBC_URL=jdbc:mysql://{ip}:3306/sonarqube?useUnicode=true&characterEncoding=utf8"
+    ports:
+      - "9000:9000"
+      - "9092:9092"
+    ## options as below
+    restart: always
+    links:
+      - db
+  db:
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_DATABASE=revel
+      - MYSQL_USER=revel
+      - MYSQL_PASSWORD=secret
+    volumes:
+      - ./datadir:/var/lib/mysql
+```

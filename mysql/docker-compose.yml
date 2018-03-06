@@ -1,0 +1,11 @@
+version: '2'
+services: 
+  db:
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_DATABASE=revel
+      - MYSQL_USER=revel
+      - MYSQL_PASSWORD=secret
+    volumes:
+      - ./datadir:/var/lib/mysql

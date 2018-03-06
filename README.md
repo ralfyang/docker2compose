@@ -1,6 +1,6 @@
 # Docker2Compose
 ## How to install
-
+* docker & docker-compose required (_Install the Docker & Docker-compose_: `curl -sL bit.ly/startdocker |bash`)
 ```
 curl -sL bit.ly/dcc_ > ./dcg
 chmod 755 ./dcg
@@ -35,6 +35,8 @@ tree
 ├── README.md
 └── oracle_xe
     └── docker-compose.yml
+    
+cd oracle_xe && docker-compose up -d
 ```
 
 ## You can make a docker-compose stack as below(Manually)

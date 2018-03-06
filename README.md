@@ -1,4 +1,10 @@
 # Docker2Compose
+## How to install
+
+```
+curl -sL bit.ly/dcc_ > ./dcg
+chmod 755 ./dcg
+```
 
 ## How to use
  * Command sample
@@ -31,4 +37,3 @@ tree
     └── docker-compose.yml
 ```
 
-## How to install

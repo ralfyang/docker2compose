@@ -97,7 +97,7 @@ Parser_eng options "--restart"
 Option_output(){
 	Target_option=$1
 		## Check the information of Volume
-		if [[ $(cat output.$Target_option | egrep -v "$Target_option:") != "" ]];then
+		if [[ $(cat $Output.$Target_option | egrep -v "$Target_option:") != "" ]];then
 			cat $Output.$Target_option >> $Output
 		fi
 	## purge the temp file
